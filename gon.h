@@ -6,15 +6,15 @@ using namespace System;
 
 namespace GonWrapper
 {
-	public ref class GonObject
+	public ref class GonWObject
 	{
-		GON::GonObject* m_Instance;
+		GonObject* m_Instance;
 
 	public:
-		GonObject();
-		GonObject(GON::GonObject obj);
-		~GonObject() { this->!GonObject(); }
-		!GonObject() { delete m_Instance; }
+		GonWObject();
+		GonWObject(GonObject obj);
+		~GonWObject() { this->!GonWObject(); }
+		!GonWObject() { delete m_Instance; }
 
 		enum class FieldType {
 			NULLGON,
@@ -27,7 +27,7 @@ namespace GonWrapper
 
 		String^ Name;
 
-		static GonObject^ Load(String^ filename);
+		static GonWObject^ Load(String^ filename);
 
 		String^ GetString();
 		const char* GetCharArray();
@@ -45,31 +45,31 @@ namespace GonWrapper
 		bool Contains(int child);
 		bool Exists();
 
-		GonObject^ operator[](String^ child);
-		GonObject^ Get(String^ child);
+		GonWObject^ operator[](String^ child);
+		GonWObject^ Get(String^ child);
 
-		GonObject^ ChildOrSelf(String^ child);
+		GonWObject^ ChildOrSelf(String^ child);
 
-		GonObject^ operator[](int childindex);
-		GonObject^ Get(int childindex);
+		GonWObject^ operator[](int childindex);
+		GonWObject^ Get(int childindex);
 		int Size();
 
 		void Save(String^ outfilename);
 
-		void InsertChild(GonObject^ other);
-		void InsertChild(String^ name, GonObject^ other);
+		void InsertChild(GonWObject^ other);
+		void InsertChild(String^ name, GonWObject^ other);
 
-		void Append(GonObject^ other);
+		void Append(GonWObject^ other);
 
 		// my own methods
 		String^ GetFieldTypeAsString();
 
-		static GonObject^ FromInt(int value);
-		static GonObject^ FromNumber(double value);
-		static GonObject^ FromBool(bool value);
-		static GonObject^ FromString(String^ value);
+		static GonWObject^ FromInt(int value);
+		static GonWObject^ FromNumber(double value);
+		static GonWObject^ FromBool(bool value);
+		static GonWObject^ FromString(String^ value);
 
-		static GonObject^ MakeEmptyObject();
-		static GonObject^ MakeEmptyArray();
+		static GonWObject^ MakeEmptyObject();
+		static GonWObject^ MakeEmptyArray();
 	};
 }

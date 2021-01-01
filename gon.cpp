@@ -20,14 +20,14 @@ String^ string_to_managed_string(std::string str)
 
 namespace GonWrapper
 {
-	GonObject::GonObject()
+	GonWObject::GonWObject()
 	{
-		m_Instance = new GON::GonObject();
+		m_Instance = new GonObject();
 	}
 
-	GonObject::GonObject(GON::GonObject obj)
+	GonWObject::GonWObject(GonObject obj)
 	{
-		m_Instance = new GON::GonObject();
+		m_Instance = new GonObject();
 		m_Instance->children_map = obj.children_map;
 		m_Instance->children_array = obj.children_array;
 		m_Instance->int_data = obj.int_data;
@@ -39,205 +39,205 @@ namespace GonWrapper
 		m_Instance->type = obj.type;
 	}
 
-	GonObject^ GonObject::Load(String^ filename)
+	GonWObject^ GonWObject::Load(String^ filename)
 	{
 		std::string str = string_to_char_array(filename);
-		GON::GonObject obj = GON::GonObject::Load(str);
-		GonObject^ res = gcnew GonObject(obj);
+		GonObject obj = GonObject::Load(str);
+		GonWObject^ res = gcnew GonWObject(obj);
 		return res;
 	}
 
-	String^ GonObject::GetString()
+	String^ GonWObject::GetString()
 	{
 		std::string res = m_Instance->String();
 		return string_to_managed_string(res);
 	}
 
-	const char* GonObject::GetCharArray()
+	const char* GonWObject::GetCharArray()
 	{
 		return m_Instance->CString();
 	}
 
-	int GonObject::GetInt()
+	int GonWObject::GetInt()
 	{
 		return m_Instance->Int();
 	}
 
-	double GonObject::GetNumber()
+	double GonWObject::GetNumber()
 	{
 		return m_Instance->Number();
 	}
 
-	bool GonObject::GetBool()
+	bool GonWObject::GetBool()
 	{
 		return m_Instance->Bool();
 	}
 
-	String^ GonObject::GetString(String^ _default)
+	String^ GonWObject::GetString(String^ _default)
 	{
 		std::string str = string_to_char_array(_default);
 		std::string res = m_Instance->String(str);
 		return string_to_managed_string(res);
 	}
 
-	const char* GonObject::GetCharArray(const char* _default)
+	const char* GonWObject::GetCharArray(const char* _default)
 	{
 		return m_Instance->CString(_default);
 	}
 
-	int GonObject::GetInt(int _default)
+	int GonWObject::GetInt(int _default)
 	{
 		return m_Instance->Int(_default);
 	}
 
-	double GonObject::GetNumber(double _default)
+	double GonWObject::GetNumber(double _default)
 	{
 		return m_Instance->Number(_default);
 	}
 
-	bool GonObject::GetBool(bool _default)
+	bool GonWObject::GetBool(bool _default)
 	{
 		return m_Instance->Bool(_default);
 	}
 
-	bool GonObject::Contains(String^ child)
+	bool GonWObject::Contains(String^ child)
 	{
 		std::string str = string_to_char_array(child);
 		return m_Instance->Contains(str);
 	}
 
-	bool GonObject::Contains(int child)
+	bool GonWObject::Contains(int child)
 	{
 		return m_Instance->Contains(child);
 	}
 
-	bool GonObject::Exists()
+	bool GonWObject::Exists()
 	{
 		return m_Instance->Exists();
 	}
 
-	GonObject^ GonObject::operator[](String^ child)
+	GonWObject^ GonWObject::operator[](String^ child)
 	{
 		std::string str = string_to_char_array(child);
-		return gcnew GonObject((*m_Instance)[str]);
+		return gcnew GonWObject((*m_Instance)[str]);
 	}
 
-	GonObject^ GonObject::Get(String^ child)
+	GonWObject^ GonWObject::Get(String^ child)
 	{
 		std::string str = string_to_char_array(child);
-		return gcnew GonObject((*m_Instance)[str]);
+		return gcnew GonWObject((*m_Instance)[str]);
 	}
 
-	GonObject^ GonObject::ChildOrSelf(String^ child)
+	GonWObject^ GonWObject::ChildOrSelf(String^ child)
 	{
 		std::string str = string_to_char_array(child);
-		return gcnew GonObject(m_Instance->ChildOrSelf(str));
+		return gcnew GonWObject(m_Instance->ChildOrSelf(str));
 	}
 
-	GonObject^ GonObject::operator[](int childindex)
+	GonWObject^ GonWObject::operator[](int childindex)
 	{
-		return gcnew GonObject((*m_Instance)[childindex]);
+		return gcnew GonWObject((*m_Instance)[childindex]);
 	}
 
-	GonObject^ GonObject::Get(int childindex)
+	GonWObject^ GonWObject::Get(int childindex)
 	{
-		return gcnew GonObject((*m_Instance)[childindex]);
+		return gcnew GonWObject((*m_Instance)[childindex]);
 	}
 
-	int GonObject::Size()
+	int GonWObject::Size()
 	{
 		return m_Instance->Size();
 	}
 
-	void GonObject::Save(String^ outfilename)
+	void GonWObject::Save(String^ outfilename)
 	{
 		std::string str = string_to_char_array(outfilename);
 		m_Instance->Save(str);
 	}
 
-	void GonObject::InsertChild(GonObject^ other)
+	void GonWObject::InsertChild(GonWObject^ other)
 	{
 		m_Instance->InsertChild(*other->m_Instance);
 	}
 
-	void GonObject::InsertChild(String^ name, GonObject^ other)
+	void GonWObject::InsertChild(String^ name, GonWObject^ other)
 	{
 		std::string str = string_to_char_array(name);
 		m_Instance->InsertChild(str, *other->m_Instance);
 	}
 
-	void GonObject::Append(GonObject^ other)
+	void GonWObject::Append(GonWObject^ other)
 	{
 		m_Instance->Append(*other->m_Instance);
 	}
 
-	String^ GonObject::GetFieldTypeAsString()
+	String^ GonWObject::GetFieldTypeAsString()
 	{
 		switch (m_Instance->type)
 		{
-		case GON::GonObject::FieldType::ARRAY:
+		case GonObject::FieldType::ARRAY:
 			return "ARRAY";
-		case GON::GonObject::FieldType::BOOL:
+		case GonObject::FieldType::BOOL:
 			return "BOOL";
-		case GON::GonObject::FieldType::NULLGON:
+		case GonObject::FieldType::NULLGON:
 			return "NULLGON";
-		case GON::GonObject::FieldType::NUMBER:
+		case GonObject::FieldType::NUMBER:
 			return "NUMBER";
-		case GON::GonObject::FieldType::OBJECT:
+		case GonObject::FieldType::OBJECT:
 			return "OBJECT";
-		case GON::GonObject::FieldType::STRING:
+		case GonObject::FieldType::STRING:
 			return "STRING";
 		default:
 			return "what";
 		}
 	}
 
-	GonObject^ GonObject::FromInt(int value)
+	GonWObject^ GonWObject::FromInt(int value)
 	{
-		GON::GonObject* obj = new GON::GonObject();
+		GonObject* obj = new GonObject();
 		obj->string_data = string_to_char_array(value.ToString());
 		obj->int_data = value;
-		obj->type = GON::GonObject::FieldType::NUMBER;
-		return gcnew GonObject(*obj);
+		obj->type = GonObject::FieldType::NUMBER;
+		return gcnew GonWObject(*obj);
 	}
 
-	GonObject^ GonObject::FromNumber(double value)
+	GonWObject^ GonWObject::FromNumber(double value)
 	{
-		GON::GonObject* obj = new GON::GonObject();
+		GonObject* obj = new GonObject();
 		obj->string_data = string_to_char_array(value.ToString());
 		obj->float_data = value;
-		obj->type = GON::GonObject::FieldType::NUMBER;
-		return gcnew GonObject(*obj);
+		obj->type = GonObject::FieldType::NUMBER;
+		return gcnew GonWObject(*obj);
 	}
 
-	GonObject^ GonObject::FromBool(bool value)
+	GonWObject^ GonWObject::FromBool(bool value)
 	{
-		GON::GonObject* obj = new GON::GonObject();
+		GonObject* obj = new GonObject();
 		obj->string_data = string_to_char_array(value.ToString());
 		obj->bool_data = value;
-		obj->type = GON::GonObject::FieldType::BOOL;
-		return gcnew GonObject(*obj);
+		obj->type = GonObject::FieldType::BOOL;
+		return gcnew GonWObject(*obj);
 	}
 
-	GonObject^ GonObject::FromString(String^ value)
+	GonWObject^ GonWObject::FromString(String^ value)
 	{
-		GON::GonObject* obj = new GON::GonObject();
+		GonObject* obj = new GonObject();
 		obj->string_data = string_to_char_array(value);
-		obj->type = GON::GonObject::FieldType::STRING;
-		return gcnew GonObject(*obj);
+		obj->type = GonObject::FieldType::STRING;
+		return gcnew GonWObject(*obj);
 	}
 
-	GonObject^ GonObject::MakeEmptyObject()
+	GonWObject^ GonWObject::MakeEmptyObject()
 	{
-		GON::GonObject* obj = new GON::GonObject();
-		obj->type = GON::GonObject::FieldType::OBJECT;
-		return gcnew GonObject(*obj);
+		GonObject* obj = new GonObject();
+		obj->type = GonObject::FieldType::OBJECT;
+		return gcnew GonWObject(*obj);
 	}
 
-	GonObject^ GonObject::MakeEmptyArray()
+	GonWObject^ GonWObject::MakeEmptyArray()
 	{
-		GON::GonObject* obj = new GON::GonObject();
-		obj->type = GON::GonObject::FieldType::ARRAY;
-		return gcnew GonObject(*obj);
+		GonObject* obj = new GonObject();
+		obj->type = GonObject::FieldType::ARRAY;
+		return gcnew GonWObject(*obj);
 	}
 }
